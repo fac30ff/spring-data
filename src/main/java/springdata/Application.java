@@ -8,6 +8,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootApplication
 public class Application {
 
@@ -17,16 +20,22 @@ public class Application {
         SpringApplication.run(Application.class);
     }
 
+    private List<Customer> buildInitialData() {
+        return new ArrayList<Customer>() {{
+            add(new Customer("Jack", "Bauer"));
+            add(new Customer("Chloe", "O'Brian"));
+            add(new Customer("Kim", "Bauer"));
+            add(new Customer("David", "Palmer"));
+            add(new Customer("Michelle", "Dessler"));
+            add(new Customer("Alex", "BR"));
+        }};
+    }
+
+
     @Bean
     public CommandLineRunner demo(CustomerRepository repository) {
         return (args) -> {
-            // save a couple of customers
-            repository.save(new Customer("Jack", "Bauer"));
-            repository.save(new Customer("Chloe", "O'Brian"));
-            repository.save(new Customer("Kim", "Bauer"));
-            repository.save(new Customer("David", "Palmer"));
-            repository.save(new Customer("Michelle", "Dessler"));
-            repository.save(new Customer("Alex", "BR"));
+            buildInitialData().forEach(repository::save);
 
             // fetch all customers
             log.info("Customers found with findAll():");
