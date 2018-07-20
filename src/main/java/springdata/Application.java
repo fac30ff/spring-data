@@ -36,6 +36,7 @@ public class Application {
     public CommandLineRunner demo(CustomerRepository repository) {
         return (args) -> {
             buildInitialData().forEach(repository::save);
+            repository.save(new Customer("ALEX", "BR1"));
 
             // fetch all customers
             log.info("Customers found with findAll():");
